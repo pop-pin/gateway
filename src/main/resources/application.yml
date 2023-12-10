@@ -1,0 +1,80 @@
+server:
+  port: 9000
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      routes:
+        - id: user-logout
+          uri: lb://USER-LOGOUT
+          predicates:
+            - Path=/api/v1/user/logout
+          filters:
+            - RewritePath=/api/v1/user/(?<remaining>.*), /user/$\{remaining}
+
+        - id: user-reissue-token
+          uri: lb://USER-REISSUE-TOKEN
+          predicates:
+            - Path=/api/v1/user/reissue-token
+          filters:
+            - RewritePath=/api/v1/user/(?<remaining>.*), /user/$\{remaining}
+
+        - id: user-kakao-login
+          uri: lb://USER-KAKAO-LOGIN
+          predicates:
+            - Path=/api/v1/user/kakao-login
+          filters:
+            - RewritePath=/api/v1/user/(?<remaining>.*), /user/$\{remaining}
+
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/api/v1/user/**
+            - Method=GET,POST,PUT,DELETE
+          filters:
+            - AuthorizationHeaderFilter
+            - RewritePath=/api/v1/user/(?<remaining>.*), /user/$\{remaining}
+
+        - id: location-service
+          uri: lb://LOCATION-SERVICE
+          predicates:
+            - Path=/api/v1/location/**
+          filters:
+            - AuthorizationHeaderFilter
+            - RewritePath=/api/v1/location/(?<remaining>.*), /location/$\{remaining}
+
+        - id: review-service
+          uri: lb://REVIEW-SERVICE
+          predicates:
+            - Path=/api/v1/review/**
+          filters:
+            - AuthorizationHeaderFilter
+            - RewritePath=/api/v1/review/(?<remaining>.*), /review/$\{remaining}
+
+        - id: like-service
+          uri: lb://LIKE-SERVICE
+          predicates:
+            - Path=/api/v1/like/**
+          filters:
+            - AuthorizationHeaderFilter
+            - RewritePath=/api/v1/like/(?<remaining>.*), /like/$\{remaining}
+
+        - id: category-service
+          uri: lb://CATEGORY-SERVICE
+          predicates:
+            - Path=/api/v1/category/**
+          filters:
+            - AuthorizationHeaderFilter
+            - RewritePath=/api/v1/category/(?<remaining>.*), /category/$\{remaining}
+
+jwt:
+  secret: 3H4e3DlTawx8T0Ti79PKCeDhHngmQbuiUeSy80qAGn8=
