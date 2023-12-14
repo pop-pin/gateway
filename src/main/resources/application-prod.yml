@@ -34,7 +34,7 @@ spring:
             - Path=/api/v1/user/**
             - Method=GET,POST,PUT,DELETE
           filters:
-            - AuthorizationHeaderFilter
+            # - AuthorizationHeaderFilter
             - RewritePath=/api/v1/user/(?<remaining>.*), /user/$\{remaining}
 
         - id: location-service
@@ -42,21 +42,21 @@ spring:
           predicates:
             - Path=/api/v1/location/**
           filters:
-            - AuthorizationHeaderFilter
+            # - AuthorizationHeaderFilter
             - RewritePath=/api/v1/location/(?<remaining>.*), /location/$\{remaining}
         - id: review-service
           uri: http://review-service-spring.review-service.svc.cluster.local:8080
           predicates:
             - Path=/api/v1/review/**
           filters:
-            - AuthorizationHeaderFilter
+            # - AuthorizationHeaderFilter
             - RewritePath=/api/v1/review/(?<remaining>.*), /review/$\{remaining}
         - id: like-service
           uri: http://like-service-spring.like-service.svc.cluster.local:8080
           predicates:
             - Path=/api/v1/like/**
           filters:
-            - AuthorizationHeaderFilter
+            # - AuthorizationHeaderFilter
             - RewritePath=/api/v1/like/(?<remaining>.*), /like/$\{remaining}
         # - id: category-service
         #   uri: http://category-service-spring.category-service.svc.cluster.local:8080
