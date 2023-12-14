@@ -6,7 +6,7 @@ spring:
     name: gateway
   cloud:
     gateway:
-      # routes:
+      routes:
       #   - id: user-logout
       #     uri: http://localhost:8080
       #     predicates:
